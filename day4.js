@@ -126,18 +126,21 @@ const objectify = arr =>
 const mustHaveKeys = [ 'ecl', 'hcl', 'pid', 'byr', 'eyr', 'hgt', 'iyr' ]
 const hasAllRequiredKeys = object => mustHaveKeys.every(key => Object.keys(object).includes(key))
 
+const validPassports = () => {
+  fileParser('day4')
+  .then(data => objectify(data.split('\n\n')))
+  .then(data => {
+    // part 2 addon
+    const maybeValid = data.filter(hasAllRequiredKeys)
+    const valid = validate(maybeValid)
+    // end of part 2
+    const count = data.reduce(reducer, 0)
+    console.log(`initial valid passports: ${count}`)
+    console.log(`really valid passports: ${valid}`)
+  })
+}
 
-fileParser('day4')
-.then(data => objectify(data.split('\n\n')))
-.then(data => {
-  // part 2 addon
-  const maybeValid = data.filter(hasAllRequiredKeys)
-  const valid = validate(maybeValid)
-  // end of part 2
-  const count = data.reduce(reducer, 0)
-  console.log(`initial valid passports: ${count}`)
-  console.log(`really valid passports: ${valid}`)
-})
+validPassports()
 
 function reducer(acc, currentVal) {
   if (hasAllRequiredKeys(currentVal)) {
@@ -184,19 +187,14 @@ function isHeightValid(height) {
   if(unit === 'in') {
     return size >= 59 && size <= 76 
   }
-  // hgt (Height) - a number followed by either cm or in:
-  // If cm, the number must be at least 150 and at most 193.
-  // If in, the number must be at least 59 and at most 76.
   return false;
 }
 
 function isHairColorValid(color) {
-  // hcl (Hair Color) - a # followed by exactly six characters 0-9 or a-f.
   return color.length === 7 && /^#[\d+|a-f]/.test(color)
 }
 
 function isEyeColorValid(color) {
-  // ecl (Eye Color) - exactly one of: .
   return ['amb', 'blu', 'brn', 'gry', 'grn', 'hzl', 'oth'].includes(color)
 }
 

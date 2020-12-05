@@ -68,41 +68,46 @@ correct answer is 2655892800
 */
 const fileParser = require("./file_parser");
 
-fileParser('day3').then(data => {
-  const input = data.split('\n')
-  function traverseInput(skip) {
-    let trees = 0;
-    const rowLength = input[0].length;
-    let jump = skip % rowLength;
-    for(let index in input) {
-      const current = input[index][(jump * index) % rowLength]
+const getToAirport = () => {
+  fileParser('day3').then(data => {
+    const input = data.split('\n')
+    const a = traverseInput(input, 1)
+    const b = traverseInput(input, 3)
+    const c = traverseInput(input, 5)
+    const d = traverseInput(input, 7)
+    const e = traverseInput2(input)
+    
+    console.log(`there are ${a} trees on the way to the airport`)
+    console.log(`the product of the trees is ${a*b*c*d*e}`)
+  })
+}
+
+getToAirport()
+      
+function traverseInput(input, skip) {
+  let trees = 0;
+  const rowLength = input[0].length;
+  let jump = skip % rowLength;
+  for(let index in input) {
+    const current = input[index][(jump * index) % rowLength]
+    if (current === '#') {
+      trees++
+    }
+  }
+  return trees;
+}
+function traverseInput2(input) {
+  let trees = 0;
+  let rowIndex = 0
+  const rowLength = input[0].length;
+  for(let index in input) {
+    if (index % 2 === 0) {
+      const current = input[index][rowIndex % rowLength]
       if (current === '#') {
         trees++
       }
+      rowIndex++;
     }
-    return trees;
   }
-  
-  function traverseInput2() {
-    let trees = 0;
-    let rowIndex = 0
-    const rowLength = input[0].length;
-    for(let index in input) {
-      if (index % 2 === 0) {
-        const current = input[index][rowIndex % rowLength]
-        if (current === '#') {
-          trees++
-        }
-        rowIndex++;
-      }
-    }
-    return trees;
-  }
-  const a = traverseInput(1)
-  const b = traverseInput(3)
-  const c = traverseInput(5)
-  const d = traverseInput(7)
-  const e = traverseInput2()
-  
-  console.log(a, b, c, d, e, a*b*c*d*e)
-})
+  return trees;
+}

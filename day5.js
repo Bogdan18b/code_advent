@@ -70,11 +70,12 @@ const fileParser = require('./file_parser');
   return min
  }
 
+
 //  console.log(getColumn('FFFBBBF'.split('')))
 //  console.log(getColumn(['R','L','L']))
 
  const getMaxId = () => {
-  fileParser('day6').then(data => {
+  fileParser('day5').then(data => {
     const positions = data.split('\n');
     let max = 0;
     positions.forEach(position => {
@@ -93,7 +94,7 @@ const fileParser = require('./file_parser');
 
 // i used an array first time, sorted it and saw that ids start at 100, so i checked what id between 100 and 800 is missing
 const getMyId = () => {
-  fileParser('day6').then(data => {
+  fileParser('day5').then(data => {
     const positions = data.split('\n');
     let max = 0;
     const allIds = new Set();

@@ -36,22 +36,26 @@ How many passwords are valid according to the new interpretation of the policies
 
 const fileParser = require("./file_parser");
 
-fileParser('day2').then(data => {
-  const passwords = data
-  .split('\n')
-  .map(el => el.split(' '))
-  .map(el => {
-    const [min, max] = el[0].split('-')
-    return [Number(min), Number(max), el[1][0], el[2]]
+const getValidPasswords = () => {
+  fileParser('day2').then(data => {
+    const passwords = data
+    .split('\n')
+    .map(el => el.split(' '))
+    .map(el => {
+      const [min, max] = el[0].split('-')
+      return [Number(min), Number(max), el[1][0], el[2]]
+    })
+    const occurrences = passwords.map(el => [el[0], el[1], numberOfOccurrences(el[2], el[3])])
+    const valid = occurrences.reduce(reducer, 0)
+    console.log(`there are ${valid} passwords in the first case`)
+    const valid2 = passwords.reduce(reducer2, 0)
+    
+    console.log(`there are ${valid2} passwords in the second case`)
   })
-  const occurences = passwords.map(el => [el[0], el[1], numberOfOccurences(el[2], el[3])])
-  const valid = occurences.reduce(reducer, 0)
-  console.log({valid})
-  const valid2 = passwords.reduce(reducer2, 0)
-  
-  console.log({valid2})
-})
+}
 
+getValidPasswords();
+  
 function reducer(initialValue, currentValue) {
   if (currentValue[2] <= currentValue[1] && currentValue[2] >= currentValue[0]) {
     initialValue++
@@ -59,7 +63,7 @@ function reducer(initialValue, currentValue) {
   return initialValue
 }
 
-function numberOfOccurences(letter, word) {
+function numberOfOccurrences(letter, word) {
   let count = 0;
   for(let l of word) {
     if(l === letter) count++

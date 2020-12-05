@@ -77,4 +77,23 @@ const getProduct = () => {
   })
 }
 
-getProduct()
+// getProduct()
+
+const getTripleProduct = () => {
+  fileParser('day1').then(data => {
+    const numbers = data.split('\n').map(Number)
+    const numbersSet = new Set();
+    for (let i = 0; i <= numbers.length - 2; i++) {
+      for (let j = i + 1; j <= numbers.length - 1; j++) {
+        const diff = 2020 - numbers[i] - numbers[j];
+        if (numbersSet.has(diff)) {
+          console.log(diff * numbers[i] * numbers[j])
+          break
+        }
+        numbersSet.add(numbers[i])
+      }
+    }
+  })
+}
+
+getTripleProduct()
